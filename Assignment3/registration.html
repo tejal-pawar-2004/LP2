@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Event Registration</title>
+    <style>
+      body {
+        font-family: Arial;
+        margin: 60px auto;
+        max-width: 450px;
+        background: #f0f0f0;
+      }
+
+      .box {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 26px;
+      }
+
+      .group {
+        margin-bottom: 18px;
+      }
+
+      input {
+        width: 95%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .error {
+        color: red;
+        font-size: 13px;
+        margin-top: 5px;
+        display: none;
+      }
+
+      button {
+        background: #007bff;
+        color: white;
+        border: 0;
+        padding: 12px;
+        width: 100%;
+        border-radius: 5px;
+        font-size: 17px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #005dc1;
+      }
+
+      .success {
+        background: #28a745;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        margin-top: 15px;
+        border-radius: 5px;
+        display: none;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h2>Event Registration</h2>
+      <form id="form">
+        <div class="group">
+          <input type="text" id="name" placeholder="Full Name" />
+        </div>
+        <div class="error" id="nameErr">Enter valid name (min 2 letters)</div>
+
+        <div class="group">
+          <input type="email" id="email" placeholder="Email" />
+        </div>
+        <div class="error" id="emailErr">Enter valid email</div>
+
+        <div class="group">
+          <input type="tel" id="mobile" placeholder="Mobile Number" />
+        </div>
+        <div class="error" id="mobileErr">Enter 10-digit number</div>
+
+        <button type="submit">Register</button>
+      </form>
+
+      <div class="success" id="success">Registration Successful!</div>
+    </div>
+
+    <script>
+      document.getElementById("form").onsubmit = function (e) {
+        e.preventDefault();
+        let n = document.getElementById("name").value.trim();
+        let em = document.getElementById("email").value.trim();
+        let m = document.getElementById("mobile").value.trim();
+        let v = true;
+
+        document
+          .querySelectorAll(".error")
+          .forEach((el) => (el.style.display = "none"));
+
+        if (!/^[A-Za-z\s]{2,}$/.test(n)) {
+          document.getElementById("nameErr").style.display = "block";
+          v = false;
+        }
+        if (!/^\S+@\S+\.\S+$/.test(em)) {
+          document.getElementById("emailErr").style.display = "block";
+          v = false;
+        }
+        if (!/^\d{10}$/.test(m)) {
+          document.getElementById("mobileErr").style.display = "block";
+          v = false;
+        }
+
+        if (v) {
+          document.getElementById("success").style.display = "block";
+          this.reset();
+          setTimeout(
+            () => (document.getElementById("success").style.display = "none"),
+            2000
+          );
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 200px;
+        background: #2c3e50;
+        color: white;
+        padding: 20px;
+      }
+
+      .sidebar h2 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+      }
+
+      .sidebar a:hover {
+        background: #34495e;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        padding: 20px;
+      }
+
+      header {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      header button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      /* Table */
+      .table-container {
+        background: white;
+        border-radius: 5px;
+        padding: 15px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background: #f8f9fa;
+      }
+
+      .actions button {
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-right: 5px;
+      }
+
+      .update-btn {
+        background: #27ae60;
+        color: white;
+      }
+
+      .delete-btn {
+        background: #e74c3c;
+        color: white;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: 350px;
+      }
+
+      .modal-content h3 {
+        margin-bottom: 15px;
+      }
+
+      .modal-content input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .modal-buttons button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .save-btn {
+        background: #27ae60;
+        color: white;
+      }
+
+      .cancel-btn {
+        background: #95a5a6;
+        color: white;
+      }
+
+      .confirm-delete {
+        background: #e74c3c;
+        color: white;
+      }
+
+      /* Success Message */
+      .success-message {
+        background: #d4edda;
+        color: #155724;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>Admin Panel</h2>
+      <a href="#"><i class="fa-solid fa-calendar"></i> Events</a>
+      <a href="#"><i class="fa-solid fa-users"></i> Users</a>
+      <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="login.html"
+        ><i class="fa-solid fa-right-from-bracket"></i> Logout</a
+      >
+    </div>
+
+    <div class="main-content">
+      <header>
+        <h2>Events Management</h2>
+      </header>
+
+      <div class="success-message" id="successMessage">
+        Event updated successfully!
+      </div>
+
+      <div class="table-container">
+        <table id="eventTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Event Name</th>
+              <th>Date</th>
+              <th>Location</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-id="E001">
+              <td>#E001</td>
+              <td class="event-name">Tech Conference</td>
+              <td class="event-date">2025-12-01</td>
+              <td class="event-location">Main Hall</td>
+              <td class="actions">
+                <button class="update-btn">Update</button>
+                <button class="delete-btn">Delete</button>
+              </td>
+            </tr>
+            <tr data-id="E002">
+              <td>#E002</td>
+              <td class="event-name">Hackathon</td>
+              <td class="event-date">2025-12-15</td>
+              <td class="event-location">IT Building</td>
+              <td class="actions">
+                <button class="update-btn">Update</button>
+                <button class="delete-btn">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Update Modal -->
+    <div class="modal" id="updateModal">
+      <div class="modal-content">
+        <h3>Update Event</h3>
+        <input type="text" id="eventName" placeholder="Event Name" />
+        <input type="date" id="eventDate" />
+        <input type="text" id="eventLocation" placeholder="Location" />
+        <div class="modal-buttons">
+          <button class="save-btn" id="saveUpdateBtn">Save</button>
+          <button class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Modal elements (only update modal now)
+      const updateModal = document.getElementById("updateModal");
+      const cancelButtons = document.querySelectorAll(".cancel-btn");
+      const successMessage = document.getElementById("successMessage");
+
+      // Track which row is being edited
+      let currentRow = null;
+
+      // Open Update Modal
+      document.querySelectorAll(".update-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          currentRow = this.closest("tr");
+          const eventName = currentRow.querySelector(".event-name").textContent;
+          const eventDate = currentRow.querySelector(".event-date").textContent;
+          const eventLocation =
+            currentRow.querySelector(".event-location").textContent;
+
+          document.getElementById("eventName").value = eventName;
+          document.getElementById("eventDate").value = eventDate;
+          document.getElementById("eventLocation").value = eventLocation;
+
+          updateModal.style.display = "flex";
+        });
+      });
+
+      // Direct Delete Action — No modal
+      document.querySelectorAll(".delete-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const row = this.closest("tr");
+          row.remove();
+
+          successMessage.textContent = "Event deleted successfully!";
+          successMessage.style.display = "block";
+
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 3000);
+        });
+      });
+
+      // Close update modal
+      cancelButtons.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          updateModal.style.display = "none";
+          currentRow = null;
+        });
+      });
+
+      // Save updated event
+      document
+        .getElementById("saveUpdateBtn")
+        .addEventListener("click", function () {
+          if (currentRow) {
+            const updatedName = document.getElementById("eventName").value;
+            const updatedDate = document.getElementById("eventDate").value;
+            const updatedLocation =
+              document.getElementById("eventLocation").value;
+
+            currentRow.querySelector(".event-name").textContent = updatedName;
+            currentRow.querySelector(".event-date").textContent = updatedDate;
+            currentRow.querySelector(".event-location").textContent =
+              updatedLocation;
+
+            successMessage.textContent = "Event updated successfully!";
+            successMessage.style.display = "block";
+
+            setTimeout(() => {
+              successMessage.style.display = "none";
+            }, 3000);
+
+            updateModal.style.display = "none";
+            currentRow = null;
+          }
+        });
+
+      // Close modal when clicking outside
+      window.addEventListener("click", function (e) {
+        if (e.target === updateModal) {
+          updateModal.style.display = "none";
+          currentRow = null;
+        }
+      });
+    </script>
+  </body>
+</html>

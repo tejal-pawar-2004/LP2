@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Event List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f8f9ff;
+        margin: 0;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 450px;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        color: #4f46e5;
+        margin-bottom: 20px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #4f46e5;
+        border-radius: 10px;
+        outline: none;
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        background: #4f46e5;
+        color: white;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        transition: 0.2s;
+      }
+
+      li:hover {
+        background: #3b37c8;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Event List</h2>
+
+      <input type="text" id="searchBox" placeholder="Search events..." />
+
+      <ul id="eventList"></ul>
+    </div>
+
+    <script>
+      // Array of Event Names
+      const events = [
+        "Tech Conference",
+        "AI Workshop",
+        "Music Festival",
+        "Hackathon",
+        "Startup Meetup",
+        "Web Development Bootcamp",
+        "Cyber Security Summit",
+        "Robotics Expo",
+      ];
+
+      const eventList = document.getElementById("eventList");
+      const searchBox = document.getElementById("searchBox");
+
+      // Display Events
+      function displayEvents(filter = "") {
+        eventList.innerHTML = "";
+
+        events
+          .filter((event) => event.toLowerCase().includes(filter.toLowerCase()))
+          .forEach((event) => {
+            const li = document.createElement("li");
+            li.textContent = event;
+            eventList.appendChild(li);
+          });
+      }
+
+      // Search Events Live
+      searchBox.addEventListener("keyup", () => {
+        displayEvents(searchBox.value);
+      });
+
+      // Initial Load
+      displayEvents();
+    </script>
+  </body>
+</html>
