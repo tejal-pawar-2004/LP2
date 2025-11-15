@@ -10,7 +10,7 @@ app.use(express.static(__dirname));
 
 // MongoDB
 mongoose
-  .connect("mongodb://127.0.0.1:27017/eventdb")
+  .connect("mongodb+srv://tejaldp724_db_user:WecrOv3Z7WQTjAwk@cluster0.fncdpdg.mongodb.net/?appName=Cluster0")
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB error"));
 
